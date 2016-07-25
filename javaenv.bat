@@ -10,5 +10,8 @@ goto :EOF
 
 :unquote
   set %1=%~2
+  goto :output
+ 
+:output
+  ECHO "JAVA_HOME=%JAVA_HOME%"
   goto :EOF
-  

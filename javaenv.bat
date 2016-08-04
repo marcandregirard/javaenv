@@ -2,6 +2,8 @@
 if "%1"=="" goto empty
 if "%1"=="echo" goto output
 if "%1"=="e" goto output
+if "%1"=="list" goto list
+if "%1"=="l" goto list
 rem To escape '%' the sequence is '%%', so to not have to have an arg like %JAVA6%, the following will add % % on both end of the argument
 SET java_version=%%%1%%
 
@@ -23,6 +25,12 @@ goto :EOF
 :output
   ECHO "JAVA_HOME=%JAVA_HOME%"
   SET "java_version="
+  goto :EOF
+
+:list
+  FOR /f "delims=" %%x IN (%~dp0java_versions.store) DO (
+    echo "%%~x"
+  )
   goto :EOF
 
 :empty

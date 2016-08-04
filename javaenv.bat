@@ -2,9 +2,17 @@
 if "%1"=="" goto empty
 if "%1"=="echo" goto output
 if "%1"=="e" goto output
-SET java_version=%1
-FOR /f "delims=" %%x IN (%~dp0java_versions.store) DO (set "%%~x")
+rem To escape '%' the sequence is '%%', so to not have to have an arg like %JAVA6%, the following will add % % on both end of the argument
+SET java_version=%%%1%%
+
+for /f "delims== tokens=1,2" %%a in (%~dp0java_versions.store) do (
+   set "%%~a=%%b"
+)
 call :unquote JAVA_HOME %java_version%
+
+for /f "delims== tokens=1,2" %%a in (%~dp0java_versions.store) do (
+  set "%%a="
+)
 
 goto :EOF
 
@@ -14,6 +22,7 @@ goto :EOF
 
 :output
   ECHO "JAVA_HOME=%JAVA_HOME%"
+  SET "java_version="
   goto :EOF
 
 :empty

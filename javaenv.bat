@@ -60,6 +60,24 @@ goto :EOF
     ECHO "Name of the entry missing as an argument of the batch"
     goto :EOF
   )
+  set "found="
+  for /f "delims== tokens=1,2" %%a in (%~dp0java_versions.store) do (
+     if "%2"=="%%a" (
+       set found=1
+       echo found
+     )
+  )
+  if defined found  (
+    for /f "delims== tokens=1,2" %%a in (%~dp0java_versions.store) do (
+      if "%2"=="%%a" (
+        echo nothing
+      ) ELSE (
+        echo test
+      )
+    )
+    ECHO Entry %2 deleted
+  )
+
   goto :EOF
 
 :empty

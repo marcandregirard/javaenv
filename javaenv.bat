@@ -4,6 +4,11 @@ if "%1"=="echo" goto output
 if "%1"=="e" goto output
 if "%1"=="list" goto list
 if "%1"=="l" goto list
+if "%1"=="add" goto add
+if "%1"=="a" goto add
+if "%1"=="remove" goto remove
+if "%1"=="r" goto remove
+
 rem To escape '%' the sequence is '%%', so to not have to have an arg like %JAVA6%, the following will add % % on both end of the argument
 SET java_version=%%%1%%
 
@@ -30,6 +35,30 @@ goto :EOF
 :list
   FOR /f "delims=" %%x IN (%~dp0java_versions.store) DO (
     echo "%%~x"
+  )
+  goto :EOF
+
+:add
+  if "%2"=="" (
+    ECHO "Name of the entry missing"
+    goto :EOF
+  )
+  if "%~3"=="" (
+    ECHO "Path of the entry missing"
+    goto :EOF
+  )
+  IF EXIST "%~3" (
+    echo %2="%~3">> %~dp0java_versions.store
+    ECHO %2="%~3" added
+  ) ELSE (
+    ECHO %3 is not an actual folder
+  )
+  goto :EOF
+
+:remove
+  if "%2"=="" (
+    ECHO "Name of the entry missing as an argument of the batch"
+    goto :EOF
   )
   goto :EOF
 

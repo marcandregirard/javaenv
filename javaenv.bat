@@ -47,12 +47,13 @@ goto :EOF
     ECHO "Path of the entry missing"
     goto :EOF
   )
-  IF EXIST "%~3" (
+  echo %~3
+  IF EXIST %~3 (
     echo %2="%~3">> %~dp0java_versions.store
     ECHO %2="%~3" added
   ) ELSE (
     ECHO %3 is not an actual folder
-  )
+  ) .
   goto :EOF
 
 :remove
@@ -69,12 +70,12 @@ goto :EOF
   )
   if defined found  (
     for /f "delims== tokens=1,2" %%a in (%~dp0java_versions.store) do (
-      if "%2"=="%%a" (
-        echo nothing
-      ) ELSE (
-        echo test
+      if NOT "%2"=="%%a" (
+        echo %%~a=%%b>> %~dp0new_java_versions.store
       )
     )
+    xcopy %~dp0new_java_versions.store %~dp0java_versions.store /y
+    del %~dp0new_java_versions.store /f /q
     ECHO Entry %2 deleted
   )
 

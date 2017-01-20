@@ -1,4 +1,22 @@
+<#
+.SYNOPSIS
 
+Modify the JAVA_HOME env variable in your current Powershell console.
+.DESCRIPTION
+Author: Marc-Andre Girard
+Modify the JAVA_HOME env variable in your current Powershell console from a .store file. You can add/remove/list all the version included in your stored file.
+This script does not change permantely the value of the JAVA_HOME, only for the current console.
+.PARAMETER Action
+
+Will tell the script which action you want to execute.
+Possible value are : "e", "echo","s","set","a","add","l","list","r","remove"
+.PARAMETER Key
+
+Refer to the key that will be used to get or set the version in the .store file.
+.PARAMETER Value
+
+Value that will be used to store in the .store file. Must be a valid Path.
+#>
 Param(
   [parameter(Mandatory=$true)]
   [ValidateSet("e", "echo","s","set","a","add","l","list","r","remove")]

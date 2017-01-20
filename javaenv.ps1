@@ -1,15 +1,10 @@
-<#
-    Name: javaenv
-    Date: 12 September 2016
-    Author: Marc-Andre Girard
-    Purpose: Modify the JAVA_HOME env variable based on Java installations on the computer.
-#>
 
 Param(
-  [Parameter(Mandatory=$True)]
-  [string]$action,
-  [string]$key,
-  [string]$value
+  [parameter(Mandatory=$true)]
+  [ValidateSet("e", "echo","s","set","a","add","l","list","r","remove")]
+  [string]$Action,
+  [string]$Key,
+  [string]$Value
 )
 
 <#
@@ -81,31 +76,34 @@ Set-StrictMode -Version Latest
 $scriptpath = $MyInvocation.MyCommand.Path
 $dir = Split-Path $scriptpath
 
-
-if($action -eq "e" -or $action -eq "echo") {
-    Output
-}
-
-
-if($action -eq "s" -or $action -eq "set") {
-    if(![string]::IsNullOrEmpty($key)) {
-        $value_from_file = GetValueFromFile($key)
-        SetJavaHome($value_from_file)
+switch ($Action){
+    {"e","echo" -contains $_}{
         Output
-    } else {
-        Write-Host "You must provide the key to set with -key or provide the second argument"
     }
-    
-}
-
-if($action -eq "a" -or $action -eq "add") {
-    AddVersionToFile $key $value
-}
-
-if($action -eq "l" -or $action -eq "list") {
-    GetVersionsFromFile
-}
-
-if($action -eq "r" -or $action -eq "remove") {
-    RemoveVersionFromFile $key
+    {"s","set" -contains $_}{
+        if(![string]::IsNullOrEmpty($Key)) {
+            $value_from_file = GetValueFromFile($Key)
+            SetJavaHome($value_from_file)
+            Output
+        } else {
+            Write-Host "You must provide the key to set with -key or provide the second argument"
+        }
+    }
+    {"a","add" -contains $_}{
+        If (Test-Path $Value){
+            AddVersionToFile $Key $Value
+        } else {
+            "The Path '$Value' Was Not Valid"
+        }
+       
+    }
+    {"l","list" -contains $_}{
+        GetVersionsFromFile
+    }
+    {"r","remove" -contains $_}{
+        RemoveVersionFromFile $Key
+    }
+    default {
+        "You typed '$_' and it is has no associated action"
+    }
 }

@@ -6,6 +6,8 @@ Modify the JAVA_HOME env variable in your current Powershell console.
 Author: Marc-Andre Girard
 Modify the JAVA_HOME env variable in your current Powershell console from a .store file. You can add/remove/list all the version included in your stored file.
 This script does not change permantely the value of the JAVA_HOME, only for the current console.
+
+This script was reviewed by : Matt http://codereview.stackexchange.com/users/89853/matts  on : http://codereview.stackexchange.com/a/152609
 .PARAMETER Action
 
 Will tell the script which action you want to execute.
